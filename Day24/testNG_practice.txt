@@ -1,0 +1,399 @@
+1.Create 2 test cases, disable one using enabled = false, and run only the active test.
+code;package Testing_package;
+
+import org.testng.annotations.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeTest;
+
+public class TestCases {
+	
+	WebDriver driver;
+	PageClass pg;
+	boolean enabled=false;
+	@BeforeTest//1(primary condition)
+	public void beforeTest() throws InterruptedException {
+		  driver=new ChromeDriver();
+			driver.get("https://www.ebay.com/");
+			driver.manage().window().maximize();
+			Thread.sleep(5000);
+	}
+	
+  @Test(enabled=true)
+  public void Signin() throws InterruptedException {
+	  if(enabled=true) {
+		  driver.navigate().to("https://signin.ebay.com/ws/eBayISAPI.dll?SignIn&sgfl=gh&ru=https%3A%2F%2Fwww.ebay.com%2F");
+			 pg=new PageClass(driver);
+			 pg.email_in();
+			 pg.con_in();
+			 pg.pass_in();
+			 pg.submit_in();
+		  System.out.println("Signin successful.");
+		  
+	  }else {
+		  System.out.println("Error ocurrs to Signin.");
+	  }
+	  
+  }
+  @Test(enabled=false)
+  public void aadtocart() throws InterruptedException {
+	  pg=new PageClass(driver);
+	 //boolean enabled=true;
+	  if(enabled=true) {
+	          pg.addtocart_in();
+	  }else {
+		  System.out.println("Signin failed thus addtocart is not possible.");
+	  }
+	  
+  }
+  public static void main(String[] args) {
+	  
+	
+}
+}
+
+2.Write a test to run the same test multiple times.
+code;package Testing_package;
+
+import org.testng.annotations.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeTest;
+
+public class SameTestMultipleTimes {
+  
+  WebDriver driver;
+	PageClass pg;
+	boolean enabled=false;
+	@BeforeTest//1(primary condition)
+	public void beforeTest() throws InterruptedException {
+		  driver=new ChromeDriver();
+			driver.get("https://www.ebay.com/");
+			driver.manage().window().maximize();
+			Thread.sleep(5000);
+	}
+ 
+  @Test(invocationCount = 5)
+  public void searchmultipletimes() throws InterruptedException {
+	  pg=new PageClass(driver);
+	 WebElement search=driver.findElement(By.id("gh-ac"));
+	 search.clear();
+	 search.sendKeys("headphones");
+	 search.sendKeys(Keys.ENTER);
+  }
+
+}
+
+3.Write test cases for a dummy login page using @Parameters in testng.xml.
+code;package Testing_package;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
+
+public class DummyLoginTest {
+	WebDriver driver;
+	public void setup() {
+		driver=new ChromeDriver();
+		driver.get("http://zero.webappsecurity.com/login.html");
+		driver.manage().window().maximize();
+		
+	}
+  @Test
+  @Parameters({"username1","password1"})
+  public void loginTest( String username1, String password1) {
+	  WebElement userName = driver.findElement(By.id("user_login"));
+	  userName.clear();
+	  userName.sendKeys(username1);
+	  
+	  WebElement passwordfield=driver.findElement(By.id("user_password"));
+	  passwordfield.clear();
+	  passwordfield.sendKeys(password1);
+	  
+	  driver.findElement(By.xpath("//*[@id=\"login_form\"]/div[2]/input")).click();
+  }
+  
+}
+tstng1.xml file :<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.1.dtd" >
+<suite name="ParallelSuite" parallel="classes" thread-count="2">
+    <test name="ValidLogin">
+    <parameter name="username1" value="username"/>
+    <parameter name="password1" value="password"/>
+        <classes>
+            <class name="Testing_package.DummyLoginTest"/>
+        </classes>
+    </test>
+    <test name="InvalidLogin">
+    <parameter name="username1" value="username"/>
+    <parameter name="password1" value="pass"/>
+        <classes>
+            <class name="Testing_package.DummyLoginTest"/>
+        </classes>
+    </test>
+</suite>
+ 
+4.Write dependent test cases:
+
+login()
+
+search Product() (depends on login)
+
+logout() (depends on search)
+code;package Testing_package;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class DependentTestCases {
+	
+
+	WebDriver driver;
+	PageClass pg;
+	boolean enabled=true;
+	@BeforeTest//1(primary condition)
+	public void beforeTest() throws InterruptedException {
+		  driver=new ChromeDriver();
+			driver.get("https://www.ebay.com/");
+			driver.manage().window().maximize();
+			Thread.sleep(5000);
+	}
+  @Test(priority=1)
+  public void Signin() throws InterruptedException {
+	  if(enabled=true) {
+		  driver.navigate().to("https://signin.ebay.com/ws/eBayISAPI.dll?SignIn&sgfl=gh&ru=https%3A%2F%2Fwww.ebay.com%2F");
+			 pg=new PageClass(driver);
+			 pg.email_in();
+			 pg.con_in();
+			 pg.pass_in();
+			 pg.submit_in();
+		  System.out.println("Signin successful.");
+		  
+	  }else {
+		  System.out.println("Error ocurrs to Signin.");
+	  }
+  }
+  @Test(priority=2)
+  public void SearchProduct() throws InterruptedException {
+	  pg=new PageClass(driver);
+	 boolean enabled=true;
+	  if(enabled=true) {
+	       WebElement searchproduct=  driver.findElement(By.id("gh-ac"));
+	       searchproduct.sendKeys("watch");
+	       searchproduct.sendKeys(Keys.ENTER);
+	  }else {
+		  System.out.println("Signin failed thus search product  is not possible.");
+	 }
+	  
+  }
+  @Test(priority=3)
+  public void Signout() throws InterruptedException {
+	  pg=new PageClass(driver);
+	  if(enabled=true) {
+	 driver.findElement(By.cssSelector("button[aria-haspopup=\"true\"]")).click();
+	 Thread.sleep(2000);
+	 driver.findElement(By.cssSelector("body[data-uvcc-ready=\"true\"]")).click();
+	 Thread.sleep(2000);
+	 System.out.println("Signout successful.");
+	  }else {
+		  System.out.println("Signout is not possible .");
+	  }
+  }
+}
+
+
+
+ 5.Use Data Provider to supply multiple sets of usernames/passwords to a login test.
+code;package Testing_package;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import com.google.common.collect.Table.Cell;
+public class ExcelTest {
+	
+	@DataProvider(name= "excelData")
+	public Object[][] excelDataProvider() throws IOException {
+		String excelpath="C:\\Users\\tatip\\OneDrive\\Desktop\\Excelsheets\\Sheet1";
+		String sheetName="Sheet1";
+		
+		FileInputStream fis= new FileInputStream(excelpath);
+		Workbook workbook =WorkbookFactory.create(fis);
+		Sheet sheet= workbook.getSheet(sheetName);
+		
+		int rows = sheet.getPhysicalNumberOfRows();
+		int cols= sheet.getRow(0).getLastCellNum();
+		
+		Object[][] data= new Object[rows-1][cols];
+		for(int i=1;i<rows;i++) {
+			Row row = sheet.getRow(i);
+			for(int j=0;j<cols;j++) {
+				Cell cell=(Cell) row.getCell(j);
+				data[i-1][j] =(cell==null) ? "":cell.toString();
+				
+			}
+		}
+		workbook.close();
+		fis.close();
+		
+		return data;
+	}
+	
+	@Test(dataProvider="excelData")
+
+	  public void testLogin(String username1,String password1) {
+		System.out.println("Username:"+username1+" |Password:"+password1);
+		WebDriver driver=new ChromeDriver();
+		driver.get("http://zero.webappsecurity.com/login.html");
+		WebElement usr=driver.findElement(By.id("user_login"));
+		usr.sendKeys(username1);
+		WebElement psw=driver.findElement(By.id("user_password"));
+		psw.sendKeys(password1);
+		driver.findElement(By.cssSelector("input[name=\"submit\"]")).click();
+        
+		  
+	  }
+
+	
+
+}
+
+ 6.Run test cases in parallel (methods, classes, tests) using parallel attribute in testng.xml.
+code;package Testing_package;
+
+import org.testng.annotations.Test;
+
+import org.testng.annotations.BeforeClass;
+
+import org.openqa.selenium.By;
+
+import org.openqa.selenium.Keys;
+
+import org.openqa.selenium.WebDriver;
+
+import org.openqa.selenium.WebElement;
+
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import org.testng.Assert;
+
+import org.testng.annotations.AfterClass;
+ 
+public class Para_testing {
+
+	WebDriver driver;
+
+	@BeforeClass
+
+	  public void beforeClass() throws InterruptedException {
+
+//		driver = new ChromeDriver();
+
+		Thread.sleep(3000);
+
+//        driver.manage().window().maximize();
+
+         }
+
+  @Test(priority=4)
+
+  public void eBay() {
+
+	  driver = new ChromeDriver();
+
+	  driver.get("https://www.ebay.com/?gad_source=1&gad_campaignid=22873541418&gbraid=0AAAABA_ya85eTcZP0DpU80Luz-bor-SYc&gclid=CjwKCAjw7_DEBhAeEiwAWKiCC7iaiOU10UTjMpQZ7OH5ISETEyzGQHy8mnho1hj1JsNRUHREsKtnzxoCvioQAvD_BwE");
+      System.out.println("eBay -  Thread ID:"+Thread.currentThread().getId());
+  }
+
+  @Test(priority=3)
+
+  public void amazon() throws InterruptedException
+
+  {
+
+	  driver = new ChromeDriver();
+
+	  driver.get("https://www.amazon.in/"); 
+
+	  String expectedurl="https://www.amazon.in/";
+
+	  String actualurl=driver.getCurrentUrl();
+
+	  Assert.assertEquals(actualurl, expectedurl,"Url validation fail");
+	  System.out.println("Amazon -  Thread ID:"+Thread.currentThread().getId());
+	  Thread.sleep(3000);
+
+  }
+
+  @Test(priority=1)
+
+  public void flipkart() throws InterruptedException
+
+  {
+
+	  driver = new ChromeDriver();
+
+	  driver.get("https://www.flipkart.com/"); 
+
+	  String expectedtitle="Online Shopping Site for Mobiles, Electronics, Furniture, Grocery, Lifestyle, Books & More. Best Offers!";
+
+	  String actualtitle=driver.getTitle();
+
+	  Assert.assertEquals(actualtitle, expectedtitle,"Title validation fail");
+	  System.out.println("Flipkart -  Thread ID:"+Thread.currentThread().getId());
+	  Thread.sleep(3000);
+
+  }
+
+  @Test(priority=2)
+
+  public void zerobank() throws InterruptedException
+
+  {
+
+	  driver = new ChromeDriver();
+
+	  driver.get("http://zero.webappsecurity.com/");
+
+	  WebElement search=driver.findElement(By.id("searchTerm"));
+
+	  search.sendKeys("Online banking");
+
+	  search.sendKeys(Keys.ENTER);
+
+	  Assert.assertTrue(true,"search button is not clickable ");
+	  System.out.println("ZeroBank -  Thread ID:"+Thread.currentThread().getId());
+	  Thread.sleep(3000);
+
+  }
+
+ 
+  @AfterClass
+
+  public void afterClass() {
+
+	  driver.quit();
+
+  }
+ 
+}
+
+ 
