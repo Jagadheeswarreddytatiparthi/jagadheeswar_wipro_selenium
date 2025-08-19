@@ -1,0 +1,31 @@
+Test plan on login module
+Test plan identifier = tp_login_2025_v1
+Introduction= validate user authentication (if valid credentials- login
+Else invalid credentials- print error msg for invalid
+username and password)
+Test items == login, password, signin button, keep me signin checkbox, forgot password link,
+zerobank title, caption, terms and conditions, ? icon
+Features to be tested === login, password, signin button, keep me signin checkbox, ? icon
+Features not to be tested == , forgot password link, zerobank title, caption, terms and conditions,
+Approach= manual testing(black box testing(Functional testing))
+Item pass/fail criteria=
+Suspension criteria and resumption requirements= 5/8/2025 suspension,
+Test deliverables=
+Test cases Documents
+Test reports
+Test cases Documents
+Test reports
+Test Plan
+Test Summary Report
+Test Bug Report
+Test Analysis Report
+Review documents
+Bug Analysis report etc
+Environmental needs= windows 11pc, testlink, excel, browser chrome and firefox browser,
+network
+Responsibilities- Neeva sharma(prepare test cases and test analysis reports)
+Staffing and training needs=Selenium webdriver(testers names)
+Schedule= 5/8/2025
+Risks and contingencies= no risk
+Approvals= manager name
+
