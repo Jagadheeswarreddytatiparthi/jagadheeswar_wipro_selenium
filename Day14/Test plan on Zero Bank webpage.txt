@@ -1,0 +1,31 @@
+Test plan on Zero Bank webpage
+Test plan identifier = tp_ZeroBank_webpage_2025
+Introduction= For checking the webpage functionalities of links buttons and navigation buttons (if icons works properly their respective functions
+Else- icons are not responding)
+Test items == Home ,Online Banking, Feedback, Search, Signin button , Navigation buttons , Online Banking , Checking Account Activity, Transfer Funds, My Money Map, More services button
+
+
+Features to be tested === Home ,Online Banking, Feedback, Search, Signin button , Navigation buttons , Online Banking , Checking Account Activity, Transfer Funds, My Money Map, More services button, links in footer
+Features not to be tested ==  name at the topleftcorner, footer content,Terms of Use, Contact Micro Focus, Privacy Statement
+Approach= manual testing(black box testing(Functional testing))
+Item pass/fail criteria=
+Suspension criteria and resumption requirements= 5/8/2025 suspension,
+Test deliverables=
+Test cases Documents
+Test reports
+Test cases Documents
+Test reports
+Test Plan
+Test Summary Report
+Test Bug Report
+Test Analysis Report
+Review documents
+Bug Analysis report etc
+Environmental needs= windows 11pc/tablet/Linux/MacBook(OS), excel, browser chrome and Firefox browser, Zero Bank webpage link 
+network
+Responsibilities- Jagadeesh(prepare test cases and test analysis reports)
+Staffing and training needs=Selenium web driver(testers names)
+Schedule= 5/8/2025
+Risks and contingencies= no risk
+Approvals= Vaishali Sonanis
+
